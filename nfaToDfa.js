@@ -1,9 +1,7 @@
 import { conjuntoDasPartes, uniaoConjuntos, intersecaoConjuntos } from './util.js';
-import input1 from './input1.json'assert { type: 'json' };
+import input1 from './input1.json' assert { type: 'json' };
 import input2 from './input2.json' assert { type: 'json' };
-
-let nfa1 = input1;
-let nfa2 = input2;
+import fs from 'fs';
 
 function criarCombinacoes(dfa) {
     dfa.state = conjuntoDasPartes(dfa.state);
@@ -74,9 +72,24 @@ function converterNfaParaDfa(nfa) {
     definirTransicoes(nfa)
     definirEstadosFinais(nfa)
     encontrarEstadosAcessiveis(nfa)
-    console.log(nfa)
-    console.table(nfa.transition)
+    return nfa;
 }
 
-converterNfaParaDfa(input1)
-converterNfaParaDfa(input2)
+function gerarJsonDFA(dfa, nomeArquivo) {
+
+    let jsonOutput = JSON.stringify(dfa, null, 2);
+
+    fs.writeFile(nomeArquivo, jsonOutput, (err) => {
+        if (err) {
+            console.error('Erro ao escrever o arquivo:', err);
+        } else {
+            console.log(`Arquivo ${nomeArquivo} criado com sucesso!`);
+        }
+    });
+}
+
+let dfa1 = converterNfaParaDfa(input1);
+gerarJsonDFA(dfa1, 'output1.json');
+
+let dfa2 = converterNfaParaDfa(input2);
+gerarJsonDFA(dfa2, 'output2.json');
