@@ -17,7 +17,6 @@ export function uniaoConjuntos(conjunto1, conjunto2) {
     });
 }
 
-
 export function intersecaoConjuntos(conjuntoA, conjuntoB) {
     const intersecao = [];
 

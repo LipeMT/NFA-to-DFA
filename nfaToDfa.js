@@ -25,17 +25,17 @@ function definirTransicoes(dfa) {
         conjuntoEntradas0 = []
         conjuntoEntradas1 = []
     }
-    console.table(dfa.transition)
 }
 
 function definirEstadosFinais(dfa) {
     let { end_state } = dfa
-    end_state = end_state.toString()
     dfa.end_state = []
 
     for (let element in dfa.transition) {
-        if (element.includes(end_state)) {
-            dfa.end_state.push(element)
+        for (let finalElement of end_state) {
+            if (element.includes(finalElement)) {
+                dfa.end_state.push(element)
+            }
         }
     }
 }
@@ -43,10 +43,9 @@ function definirEstadosFinais(dfa) {
 function encontrarEstadosAcessiveis(dfa) {
     let { state, initial_state, transition } = dfa
     let acessiveis = [initial_state]
-    
+
     for (let i = 0; i < state.length; i++) {
         acessiveis.forEach(element => {
-            console.log(transition[element[0]])
             let estado0 = transition[element][0].join(',');
             if (!acessiveis.includes(estado0)) {
                 acessiveis.push(estado0)
@@ -57,21 +56,20 @@ function encontrarEstadosAcessiveis(dfa) {
                 acessiveis.push(estado1)
             }
         })
-    } 
+    }
     dfa.transition = {}
-    for (let estado in transition){
-        for (let estadoAcessivel of acessiveis){
-            if(estado == estadoAcessivel){
+    for (let estado in transition) {
+        for (let estadoAcessivel of acessiveis) {
+            if (estado == estadoAcessivel) {
                 dfa.transition[estado] = transition[estado]
             }
         }
     }
     dfa.state = acessiveis;
     dfa.end_state = intersecaoConjuntos(dfa.state, dfa.end_state)
-    // console.log(dfa.transition)
 }
 
-function converterNfaParaDfa(nfa){
+function converterNfaParaDfa(nfa) {
     criarCombinacoes(nfa)
     definirTransicoes(nfa)
     definirEstadosFinais(nfa)
@@ -80,5 +78,5 @@ function converterNfaParaDfa(nfa){
     console.table(nfa.transition)
 }
 
-converterNfaParaDfa(nfa1)
-converterNfaParaDfa(nfa2)
+converterNfaParaDfa(input1)
+converterNfaParaDfa(input2)
